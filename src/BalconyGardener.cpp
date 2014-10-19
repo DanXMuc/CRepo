@@ -22,48 +22,55 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include "Regelkreis.hpp"
+#include "SensorInput.hpp"
+#include "Regler.hpp"
+
 #include "jhd1313m1.h"
-#include "mraa.hpp"
 #include "unistd.h"
 
 using namespace mraa;
 
+// 0x62 RGB_ADDRESS, 0x3E LCD_ADDRESS
+upm::Jhd1313m1 *lcd = new upm::Jhd1313m1(0, 0x3E, 0x62);
+
+void control()
+{
+	SensorInput* sensorInput = Regelkreis::Instance()->getSensorInput();
+	//Regler* regler = Regelkreis::Instance()->getRegler();
+	static int loop_count = 0;
+	static char str[256];
+
+	sensorInput->readSensors();
+
+	lcd->setCursor(0,0);
+    if ((loop_count++)%2 == 0) lcd->write(". ");
+    else lcd->write("o ");
+
+	// 1. Zeile
+	sprintf(str, "H:%04d ", sensorInput->getHumidity());
+	lcd->write(str);
+	sprintf(str, "W:%04d", sensorInput->getWaterLevel());
+    lcd->write(str);
+
+    // 2. Zeile
+    lcd->setCursor(1,0);
+	sprintf(str,"T:%04d ", sensorInput->getTemperature());
+    lcd->write(str);
+	sprintf(str, "L:%04d", sensorInput->getLight());
+    lcd->write(str);
+}
+
+void communicate()
+{
+}
+
 int main(int argc, char **argv)
 {
-    // 0x62 RGB_ADDRESS, 0x3E LCD_ADDRESS
-    upm::Jhd1313m1 *lcd = new upm::Jhd1313m1(0, 0x3E, 0x62);
-    char str[256];
-
-    Aio* a1;
-    Gpio* d2;
-
-    a1 = new Aio(1);
-    d2 = new Gpio(2);
-    d2->dir(DIR_OUT);
-
-    int i = 0;
-    bool r=false;
-
-    while (true) {
-        uint16_t adc_value;
-        adc_value = a1->read();
-        lcd->setCursor(0,0);
-
-        if ((i++)%2 == 0) lcd->write(". ");
-        else lcd->write("o ");
-
-        sprintf(str, "H:%05d", adc_value);
-        lcd->write(str);
-
-        if (i%20 == 0) {
-        	r = !r;
-            lcd->setCursor(1,0);
-        	d2->write(r?1:0);
-        	lcd->write(r?"on ":"off");
-        }
-
-        usleep(500000);
-    }
-
-    //lcd->close();
+	while(true)
+	{
+		control();
+		communicate();
+		usleep(500000);
+	}
 }
