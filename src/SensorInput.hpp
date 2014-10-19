@@ -22,7 +22,7 @@ private:
 	uint16_t _light;		// Letzter Messwert für Licht
 
 public:
-	SensorInput(int humidityPin=1, int waterLevelPin=2, int temperaturePin=3, int lightPin=1);
+	SensorInput(int humidityPin=0, int waterLevelPin=1, int temperaturePin=2, int lightPin=3);
 	virtual ~SensorInput();
 
 	uint16_t getHumidity() { return _humidity; }

@@ -37,16 +37,17 @@ upm::Jhd1313m1 *lcd = new upm::Jhd1313m1(0, 0x3E, 0x62);
 void control()
 {
 	SensorInput* sensorInput = Regelkreis::Instance()->getSensorInput();
-	//Regler* regler = Regelkreis::Instance()->getRegler();
+	Regler* regler = Regelkreis::Instance()->getRegler();
 	static int loop_count = 0;
 	static char str[256];
 
 	sensorInput->readSensors();
 
-	lcd->setCursor(0,0);
+	lcd->setCursor(0,15);
     if ((loop_count++)%2 == 0) lcd->write(". ");
     else lcd->write("o ");
 
+    lcd->setCursor(0,0);
 	// 1. Zeile
 	sprintf(str, "H:%04d ", sensorInput->getHumidity());
 	lcd->write(str);
@@ -59,6 +60,13 @@ void control()
     lcd->write(str);
 	sprintf(str, "L:%04d", sensorInput->getLight());
     lcd->write(str);
+
+    if (loop_count%20 == 0)
+    {
+    	lcd->setCursor(0,15);
+        lcd->write("v");
+    	regler->openValveForTimeSpan(5000);
+    }
 }
 
 void communicate()
