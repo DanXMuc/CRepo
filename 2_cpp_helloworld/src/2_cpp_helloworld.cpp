@@ -24,9 +24,13 @@ using namespace std;
 namespace
 {
 	const unsigned int POLL_INTERVAL_USEC = 1000000;
-	const unsigned int SAMPLE_INTERVAL = 10;
+	const unsigned int SAMPLE_INTERVAL = 1;
 	const unsigned int DEFAULT_WATERING_TIME = 3;
+
+	const float HUMIDITY_THRESHOLD = 1500.0;
 }
+
+bool necessaryToWaterPlant(Sensors& sensor);
 
 int main() {
 	Service s;
@@ -42,19 +46,21 @@ int main() {
 	while(true)
 	{
 		bool switchState = sensors.readOverrideSwitch();
-		printf("override switch : %i\n", switchState);
-		if(switchState)
+		if(switchState || necessaryToWaterPlant(sensors))
 		{
+			printf("watering...");
 			a.waterPlant(DEFAULT_WATERING_TIME);
 		}
-		overrideDurationFromApp = s.readServerData();
+
+		overrideDurationFromApp = s.readOverrideFromApp();
+		printf("duration: %d\n", overrideDurationFromApp);
 		if(overrideDurationFromApp != 0)
 		{
-			printf("Override from App received: Watering plant: %d\n", overrideDurationFromApp);
 			a.waterPlant(overrideDurationFromApp);
 			s.acknowledgeWater();
 		}
 		a.checkWateringStatus();
+
 		time(&currentTime);
 		if(difftime(currentTime, readTime) > SAMPLE_INTERVAL)
 		{
@@ -62,9 +68,13 @@ int main() {
 			time(&readTime);
 		}
 
-		printf("###\n");
 		usleep(POLL_INTERVAL_USEC);
 	}
 
 	return 0;
+}
+
+bool necessaryToWaterPlant(Sensors& sensor)
+{
+	return sensor.humidity < HUMIDITY_THRESHOLD;
 }

@@ -1,0 +1,43 @@
+#ifndef __DHT_H__
+#define __DHT_H__
+
+/* DHT library 
+
+MIT license
+written by Adafruit Industries
+*/
+
+// how many timing transitions we need to keep track of. 2 * number bits + extra
+#define MAXTIMINGS 85
+
+#define DHT11 11
+#define DHT22 22
+#define DHT21 21
+#define AM2301 21
+
+namespace mraa
+{
+	class Gpio;
+}
+
+
+class DHT 
+{
+private:
+    char data[6];
+    char _count;
+    bool read();
+    unsigned long _lastreadtime;
+    bool firstreading;
+    mraa::Gpio* Pin;
+
+public:
+    DHT(mraa::Gpio* pin, char count=6);
+    ~DHT();
+    void begin(void);
+    float readTemperature(bool S=false);
+    float convertCtoF(float);
+    float readHumidity();
+};
+
+#endif

@@ -1,0 +1,94 @@
+/*
+ * Sensors.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Sensors.h"
+#include "Service.h"
+#include "mraa/aio.hpp"
+#include "mraa/gpio.hpp"
+
+
+namespace
+{
+	const unsigned int TEMPERATURE_PORT = 0;
+	const unsigned int HUMIDITY_PORT = 2;
+	const unsigned int MOISTURE_PORT = 1;
+	const unsigned int LIGHT_PORT = 3;
+
+	const unsigned int OVERRIDE_PORT = 3;
+}
+
+Sensors::Sensors(const Service& service)
+	: Servc(service)
+	, Temperature(new mraa::Aio(TEMPERATURE_PORT))
+	, Moisture(new mraa::Aio(MOISTURE_PORT))
+	, Humidity(new mraa::Aio(HUMIDITY_PORT))
+	, Light(new mraa::Aio(LIGHT_PORT))
+	, Override(new mraa::Gpio(OVERRIDE_PORT, true))
+{
+	Override->dir(mraa::DIR_IN);
+}
+
+Sensors::~Sensors() {
+	// TODO Auto-generated destructor stub
+
+	delete Override;
+	Override = NULL;
+
+	delete Light;
+	Light = NULL;
+
+	delete Humidity;
+	Humidity = NULL;
+
+	delete Moisture;
+	Moisture = NULL;
+
+	delete Temperature;
+	Temperature = NULL;
+}
+
+void Sensors::readSensorValues() const
+{
+	Servc.sendSensorData("Humidity", readHumidity());
+	Servc.sendSensorData("Temperature", readTemperature());
+	Servc.sendSensorData("Moisture", readMoisture());
+	Servc.sendSensorData("Light", readLight());
+}
+
+double Sensors::readHumidity() const
+{
+	double humidity = Humidity->read();
+	printf("Humidity: %.3f\n", humidity);
+	return humidity;
+}
+
+double Sensors::readTemperature() const
+{
+	double temp = Temperature->read() / 100.0;
+	printf("Temperature: %.3f\n", temp);
+	return temp;
+}
+
+double Sensors::readMoisture() const
+{
+	double moisture = Moisture->read() / 100.0;
+	printf("Moisture: %.3f\n", moisture);
+	return moisture;
+}
+
+double Sensors::readLight() const
+{
+	double light = Light->read() / 100.0;
+	printf("Light: %.3f\n", light);
+	return light;
+}
+
+bool Sensors::readOverrideSwitch() const
+{
+	return (Override->read() == 1 ? true : false);
+}
+

@@ -15,7 +15,7 @@ namespace
 {
 	const unsigned int TEMPERATURE_PORT = 0;
 	const unsigned int HUMIDITY_PORT = 2;
-	const unsigned int MOISTURE_PORT = 1;
+	const unsigned int WATER_PORT = 1;
 	const unsigned int LIGHT_PORT = 3;
 
 	const unsigned int OVERRIDE_PORT = 3;
@@ -24,7 +24,7 @@ namespace
 Sensors::Sensors(const Service& service)
 	: Servc(service)
 	, Temperature(new mraa::Aio(TEMPERATURE_PORT))
-	, Moisture(new mraa::Aio(MOISTURE_PORT))
+	, Water(new mraa::Aio(WATER_PORT))
 	, Humidity(new mraa::Aio(HUMIDITY_PORT))
 	, Light(new mraa::Aio(LIGHT_PORT))
 	, Override(new mraa::Gpio(OVERRIDE_PORT, true))
@@ -44,45 +44,45 @@ Sensors::~Sensors() {
 	delete Humidity;
 	Humidity = NULL;
 
-	delete Moisture;
-	Moisture = NULL;
+	delete Water;
+	Water = NULL;
 
 	delete Temperature;
 	Temperature = NULL;
 }
 
-void Sensors::readSensorValues() const
+void Sensors::readSensorValues()
 {
 	Servc.sendSensorData("Humidity", readHumidity());
 	Servc.sendSensorData("Temperature", readTemperature());
-	Servc.sendSensorData("Moisture", readMoisture());
+	Servc.sendSensorData("Water", readWater());
 	Servc.sendSensorData("Light", readLight());
 }
 
-double Sensors::readHumidity() const
+double Sensors::readHumidity()
 {
-	double humidity = Humidity->read() / 100.0;
+	humidity = Humidity->read();
 	printf("Humidity: %.3f\n", humidity);
 	return humidity;
 }
 
-double Sensors::readTemperature() const
+double Sensors::readTemperature()
 {
-	double temp = Temperature->read() / 100.0;
-	printf("Temperature: %.3f\n", temp);
-	return temp;
+	temperature = Temperature->read() / 100.0;
+	printf("Temperature: %.3f\n", temperature);
+	return temperature;
 }
 
-double Sensors::readMoisture() const
+double Sensors::readWater()
 {
-	double moisture = Moisture->read() / 100.0;
-	printf("Moisture: %.3f\n", moisture);
-	return moisture;
+	water = Water->read() * 1.0;
+	printf("Water: %.3f\n", water);
+	return water;
 }
 
-double Sensors::readLight() const
+double Sensors::readLight()
 {
-	double light = Light->read() / 100.0;
+	light = Light->read() * 1.0;
 	printf("Light: %.3f\n", light);
 	return light;
 }

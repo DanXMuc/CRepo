@@ -21,21 +21,27 @@ public:
 	Sensors(const Service& service);
 	virtual ~Sensors();
 
-	void readSensorValues() const;
+	void readSensorValues();
 
-	double readHumidity() const;
-	double readMoisture() const;
-	double readTemperature() const;
-	double readLight() const;
+	double readHumidity();
+	double readWater();
+	double readTemperature();
+	double readLight();
 	bool readOverrideSwitch() const;
 
+	double water;
+	double humidity;
+	double temperature;
+	double light;
 private:
 	const Service& Servc;
 	mraa::Aio* Temperature;
-	mraa::Aio* Moisture;
+	mraa::Aio* Water;
 	mraa::Aio* Humidity;
 	mraa::Aio* Light;
 	mraa::Gpio* Override;
+
+
 };
 
 #endif /* SENSORS_H_ */

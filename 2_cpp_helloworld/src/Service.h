@@ -20,7 +20,7 @@ public:
 	void informPlantWatered(int duration) const;
 	void sendSensorData(const std::string& sensorName, double value) const;
 	void acknowledgeWater() const;
-	int readServerData();
+	int readOverrideFromApp();
 
 private:
 
