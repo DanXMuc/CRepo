@@ -15,6 +15,7 @@
 
 #include "Service.h"
 #include "Sensors.h"
+#include "Controller.h"
 #include "Actuators.h"
 #include <string.h>
 #include <time.h>
@@ -38,6 +39,7 @@ int main() {
 	Sensors sensors(s);
 
 	Actuators a(s);
+	Controller c(sensors);
 
 	time_t readTime;
 	time_t currentTime;
@@ -46,7 +48,7 @@ int main() {
 	while(true)
 	{
 		bool switchState = sensors.readOverrideSwitch();
-		if(switchState || necessaryToWaterPlant(sensors))
+		if(switchState || c.necessaryToSwitchWater())
 		{
 			printf("watering...");
 			a.waterPlant(DEFAULT_WATERING_TIME);
