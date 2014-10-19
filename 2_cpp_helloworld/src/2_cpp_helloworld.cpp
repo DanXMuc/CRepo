@@ -90,8 +90,8 @@ int main() {
 		{
 			sensors.readSensorValues();
 
-		    char* str = new char[16];
-		    snprintf(str, 16, "T:%.1fC; H:%.0f", sensors.temperature, sensors.humidity);
+		    char* str = new char[17];
+		    snprintf(str, 17, "T:%.1fC; HA:%.0f", sensors.temperature, c.average());
 		    lcd.setCursor(1, 0);
 		    lcd.write(str);
 

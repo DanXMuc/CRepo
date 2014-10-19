@@ -18,10 +18,10 @@ public:
 	virtual ~Controller();
 
 	bool necessaryToSwitchWater();
+	double average();
 
 private:
 
-	double average();
 	void addValue(double value);
 	Sensors& sensor;
 	std::vector<double> lastValues;
