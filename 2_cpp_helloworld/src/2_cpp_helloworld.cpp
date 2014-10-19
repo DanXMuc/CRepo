@@ -89,6 +89,12 @@ int main() {
 		if(difftime(currentTime, readTime) > SAMPLE_INTERVAL)
 		{
 			sensors.readSensorValues();
+
+		    char* str = new char[16];
+		    snprintf(str, 16, "T:%.1fC; H:%.0f", sensors.temperature, sensors.humidity);
+		    lcd.setCursor(1, 0);
+		    lcd.write(str);
+
 			time(&readTime);
 		}
 
