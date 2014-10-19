@@ -20,6 +20,9 @@
 #include <string.h>
 #include <time.h>
 
+#include "jhd1313m1.h"
+
+
 using namespace std;
 
 namespace
@@ -38,6 +41,10 @@ int main() {
 	s.informPlantWatered(1339);
 	Sensors sensors(s);
 
+    // 0x62 RGB_ADDRESS, 0x3E LCD_ADDRESS
+    upm::Jhd1313m1 lcd(0, 0x3E, 0x62);
+
+
 	Actuators a(s);
 	Controller c(sensors);
 
@@ -52,16 +59,31 @@ int main() {
 		{
 			printf("watering...");
 			a.waterPlant(DEFAULT_WATERING_TIME);
+
+
+		    char* str = new char[16];
+		    snprintf(str, 15, "Watering: %d", DEFAULT_WATERING_TIME);
+		    lcd.setCursor(0,0);
+		    lcd.write(str);
 		}
 
 		overrideDurationFromApp = s.readOverrideFromApp();
 		printf("duration: %d\n", overrideDurationFromApp);
 		if(overrideDurationFromApp != 0)
 		{
+		    char* str = new char[16];
+		    snprintf(str, 15, "WateringApp: %d", overrideDurationFromApp);
+		    lcd.setCursor(0,0);
+		    lcd.write(str);
+
 			a.waterPlant(overrideDurationFromApp);
 			s.acknowledgeWater();
 		}
-		a.checkWateringStatus();
+		if(a.checkWateringStatus())
+		{
+		    lcd.setCursor(0,0);
+		    lcd.write("               ");
+		}
 
 		time(&currentTime);
 		if(difftime(currentTime, readTime) > SAMPLE_INTERVAL)
@@ -72,7 +94,7 @@ int main() {
 
 		usleep(POLL_INTERVAL_USEC);
 	}
-
+    lcd.close();
 	return 0;
 }
 

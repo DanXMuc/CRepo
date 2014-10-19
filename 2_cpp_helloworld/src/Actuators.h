@@ -22,7 +22,7 @@ public:
 	virtual ~Actuators();
 
 	void waterPlant(int seconds);
-	void checkWateringStatus();
+	bool checkWateringStatus();
 private:
 	void run();
 	mraa::Gpio* Relay;

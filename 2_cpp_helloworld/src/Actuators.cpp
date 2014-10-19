@@ -40,8 +40,9 @@ void Actuators::waterPlant(int duration)
 	}
 }
 
-void Actuators::checkWateringStatus()
+bool Actuators::checkWateringStatus()
 {
+	bool switchedOff = false;
 	if(Watering)
 	{
 		time_t currentTime;
@@ -51,7 +52,10 @@ void Actuators::checkWateringStatus()
 			Relay->write(0);
 			Watering = false;
 			printf("water switched off\n");
+			switchedOff = true;
 		}
 	}
+
+	return switchedOff;
 }
 
