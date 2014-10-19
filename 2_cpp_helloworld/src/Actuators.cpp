@@ -1,0 +1,57 @@
+/*
+
+ * Actuators.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+*/
+
+#include "Actuators.h"
+#include "mraa/gpio.hpp"
+
+
+Actuators::Actuators(const Service& service)
+	: Relay(new mraa::Gpio(4,true))
+	, StartTime()
+	, Duration(0)
+	, Watering(false)
+	, Servc(service)
+{
+	Relay->dir(mraa::DIR_OUT);
+	Relay->write(0);
+
+}
+
+Actuators::~Actuators() {
+
+	delete Relay;// TODO Auto-generated destructor stub
+}
+
+void Actuators::waterPlant(int duration)
+{
+	if(!Watering)
+	{
+		Watering = true;
+		Duration = duration;
+		time(&StartTime);
+		Relay->write(1);
+		printf("water switched on\n");
+		Servc.informPlantWatered(duration);
+	}
+}
+
+void Actuators::checkWateringStatus()
+{
+	if(Watering)
+	{
+		time_t currentTime;
+		time(&currentTime);
+		if(difftime(currentTime, StartTime) > Duration)
+		{
+			Relay->write(0);
+			Watering = false;
+			printf("water switched off\n");
+		}
+	}
+}
+

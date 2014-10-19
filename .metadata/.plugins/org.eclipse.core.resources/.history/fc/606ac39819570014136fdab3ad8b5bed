@@ -1,0 +1,18 @@
+/*
+ * Actuators.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Actuators.h"
+
+Actuators::Actuators() {
+	// TODO Auto-generated constructor stub
+
+}
+
+Actuators::~Actuators() {
+	// TODO Auto-generated destructor stub
+}
+

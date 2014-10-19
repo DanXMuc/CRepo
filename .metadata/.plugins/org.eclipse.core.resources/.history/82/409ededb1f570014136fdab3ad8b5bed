@@ -1,0 +1,27 @@
+/*
+ * Actuators.h
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#ifndef ACTUATORS_H_
+#define ACTUATORS_H_
+
+namespace mraa
+{
+	class Gpio;
+}
+
+class Actuators {
+public:
+	Actuators();
+	virtual ~Actuators();
+
+	void waterPlant(bool on, int seconds) const;
+private:
+	void run();
+	mraa::Gpio* Relay;
+};
+
+#endif /* ACTUATORS_H_ */

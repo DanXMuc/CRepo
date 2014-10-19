@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;my-buzzer/src/iotdk-upm-max44000.cpp&apos; to &apos;our-project.cpp&apos;" description="Rename resource &apos;iotdk-upm-max44000.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/iotdk-upm-max44000.cpp" name="our-project.cpp" stamp="1403105955548" updateReferences="true"/>
+</session>

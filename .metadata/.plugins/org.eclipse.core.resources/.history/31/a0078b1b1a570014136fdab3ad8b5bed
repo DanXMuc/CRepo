@@ -1,0 +1,26 @@
+/*
+ * Actuators.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Actuators.h"
+#include "mraa.h"pp
+
+Actuators::Actuators()
+	: Relay(new mraa::Gpio(4,true))
+{
+	Relay->dir(mraa::DIR_OUT);
+
+}
+
+Actuators::~Actuators() {
+
+	delete Relay;// TODO Auto-generated destructor stub
+}
+
+void Actuators::switchRelay(bool on) const
+{
+	Relay->write((on ? 1 : 0));
+}

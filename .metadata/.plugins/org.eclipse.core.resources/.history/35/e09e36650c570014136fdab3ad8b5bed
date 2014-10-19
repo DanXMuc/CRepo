@@ -1,0 +1,17 @@
+/*
+ * Sensors.h
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#ifndef SENSORS_H_
+#define SENSORS_H_
+
+class Sensors {
+public:
+	Sensors();
+	virtual ~Sensors();
+};
+
+#endif /* SENSORS_H_ */

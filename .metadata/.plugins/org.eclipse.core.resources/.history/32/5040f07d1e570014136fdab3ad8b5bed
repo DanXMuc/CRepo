@@ -1,0 +1,38 @@
+/*
+
+ * Actuators.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+*/
+
+#include "Actuators.h"
+#include "mraa/gpio.hpp"
+#include <thread>
+
+Actuators::Actuators()
+	: Relay(new mraa::Gpio(4,true))
+	, Thread(Actuators::run))
+{
+	Relay->dir(mraa::DIR_OUT);
+
+}
+
+Actuators::~Actuators() {
+
+	delete Relay;// TODO Auto-generated destructor stub
+}
+
+void Actuators::waterPlant(bool on, int seconds) const
+{
+	Relay->write((on ? 1 : 0));
+}
+
+void run()
+{
+	while(running)
+	{
+		usleep()
+	}
+}
+

@@ -1,0 +1,21 @@
+/*
+ * Sensors.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Sensors.h"
+#include "Service.h"
+
+Sensors::Sensors(const Service& service)
+	: Servc(service)
+{
+	// TODO Auto-generated constructor stub
+
+}
+
+Sensors::~Sensors() {
+	// TODO Auto-generated destructor stub
+}
+

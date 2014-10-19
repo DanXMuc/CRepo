@@ -1,0 +1,25 @@
+/*
+ * Sensors.h
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#ifndef SENSORS_H_
+#define SENSORS_H_
+
+class Service;
+
+class Sensors {
+public:
+	Sensors(const Service& service);
+	virtual ~Sensors();
+
+	void readSensorValues() const;
+
+private:
+	Service& Servc;
+	double readHumidity() const;
+};
+
+#endif /* SENSORS_H_ */

@@ -1,0 +1,54 @@
+/*
+ * Sensors.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Sensors.h"
+#include "Service.h"
+#include "mraa.hpp"
+
+namespace
+{
+	const unsigned int TEMPERATURE_PORT = 0;
+	const unsigned int HUMIDITY_PORT = 1;
+}
+
+Sensors::Sensors(const Service& service)
+	: Servc(service)
+	, Temperature(new mraa::Aio(TEMPERATURE_PORT))
+	, Moisture(new mraa:Aio(HUMIDITY_PORT))
+{
+}
+
+Sensors::~Sensors() {
+	// TODO Auto-generated destructor stub
+	delete Temperature;
+	Temperature = NULL;
+}
+
+void Sensors::readSensorValues() const
+{
+	Servc.sendSensorData("Humidity", readHumidity());
+	Servc.sendSensorData("Temperature", readTemperature());
+	Servc.sendSensorData("Moisture", readMoisture());
+}
+
+double Sensors::readHumidity() const
+{
+	return 13.37;
+}
+
+double Sensors::readTemperature() const
+{
+	double temp = Temperature->read() / 100.0;
+	printf("Temperature: %.3f\n", temp);
+	return temp;
+}
+
+double Sensors::readMoisture() const
+{
+	return 13.37;
+}
+

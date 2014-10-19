@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 7 resources" deleteContents="true" description="Delete 7 resources" element1="/iotdk-c-template" element2="/iotdk-cpp-template" element3="/iotdk-maa-analogin" element4="/iotdk-maa-blink" element5="/iotdk-maa-cpp-blink" element6="/iotdk-upm-jhd1313m1" element7="/iotdk-upm-max44000" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="7" stamp="1403780973410"/>
+</session>

@@ -1,0 +1,18 @@
+/*
+ * Sensors.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Sensors.h"
+
+Sensors::Sensors() {
+	// TODO Auto-generated constructor stub
+
+}
+
+Sensors::~Sensors() {
+	// TODO Auto-generated destructor stub
+}
+

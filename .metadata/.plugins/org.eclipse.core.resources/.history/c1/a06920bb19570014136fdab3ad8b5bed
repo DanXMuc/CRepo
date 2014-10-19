@@ -1,0 +1,21 @@
+/*
+ * Actuators.h
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#ifndef ACTUATORS_H_
+#define ACTUATORS_H_
+
+#include "mraa.hpp"
+
+class Actuators {
+public:
+	Actuators();
+	virtual ~Actuators();
+
+	mraa::Gpio* Relay;
+};
+
+#endif /* ACTUATORS_H_ */

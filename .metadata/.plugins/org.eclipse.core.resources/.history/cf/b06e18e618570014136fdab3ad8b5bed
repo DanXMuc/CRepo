@@ -1,0 +1,17 @@
+/*
+ * Actuators.h
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#ifndef ACTUATORS_H_
+#define ACTUATORS_H_
+
+class Actuators {
+public:
+	Actuators();
+	virtual ~Actuators();
+};
+
+#endif /* ACTUATORS_H_ */

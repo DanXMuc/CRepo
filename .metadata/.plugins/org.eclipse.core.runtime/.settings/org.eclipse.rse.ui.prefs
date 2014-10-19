@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+org.eclipse.rse.preferences.order.connections=intel.Local;intel.galileo
+org.eclipse.rse.preferences.verify.connection=true

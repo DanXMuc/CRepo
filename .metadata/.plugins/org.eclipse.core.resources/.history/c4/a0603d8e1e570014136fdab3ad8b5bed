@@ -1,0 +1,53 @@
+//============================================================================
+// Name        : iotdk-cpp-template.cpp
+// Author      : Intel Corporation
+// Version     :
+// Copyright   : 
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+
+#include "Service.h"
+#include "Sensors.h"
+#include "Actuators.h"
+#include <string.h>
+#include <thread>
+
+using namespace std;
+
+namespace
+{
+	const unsigned int SAMPLE_INTERVAL = 50000;
+}
+
+bool isRunning = true;
+
+void sampleData(Service& s)
+{
+	Sensors sensors(s);
+	while(isRunning)
+	{
+		sensors.readSensorValues();
+		printf("###\n");
+		usleep(SAMPLE_INTERVAL);
+	}
+}
+
+int main() {
+	Service s;
+
+	std::thread sampling (sampleData, s);
+
+	Actuators a;
+
+
+
+
+	return 0;
+}

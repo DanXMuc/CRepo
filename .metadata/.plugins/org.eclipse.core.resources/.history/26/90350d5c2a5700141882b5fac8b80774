@@ -1,0 +1,79 @@
+/*
+ * Service.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Service.h"
+
+Service::Service()
+	: curl_handle(NULL)
+{
+	curl_handle = curl_easy_init();
+}
+
+Service::~Service() {
+	  /* cleanup curl stuff */
+	  curl_easy_cleanup(curl_handle);
+}
+
+void Service::informPlantWatered(int duration) const
+{
+	  curl_global_init(CURL_GLOBAL_ALL);
+
+	  char* url = new char[256];
+
+	  snprintf(url, 256, "http://146.0.40.96/balconygardener/service.php?action=infoPlantWatered&duration=%d", duration);
+
+	  /* set URL to get */
+	  curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+
+	  /* no progress meter please */
+	  curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
+
+	  /* get it! */
+	  curl_easy_perform(curl_handle);
+}
+
+void Service::sendSensorData(const std::string& sensorName, double value) const
+{
+	  curl_global_init(CURL_GLOBAL_ALL);
+
+	  char* url = new char[256];
+
+	  snprintf(url, 256, "http://146.0.40.96/balconygardener/service.php?action=insertSensorData&sensorName=%s&value=%.3f", sensorName.c_str(), value);
+
+	  /* set URL to get */
+	  curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+
+	  /* no progress meter please */
+	  curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
+
+	  /* get it! */
+	  curl_easy_perform(curl_handle);
+}
+
+int Service::readServerData()
+{
+	char* url = new char[256];
+	char* buf = new char[3];
+
+	  snprintf(url, 256, "http://146.0.40.96/balconygardener/service.php?action=shouldWater");
+
+	  /* set URL to get */
+	  curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+
+	  /* no progress meter please */
+	  curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
+
+
+	    /* we want the body be written to this file handle instead of stdout */
+	    curl_easy_setopt(curl_handle,   CURLOPT_WRITEDATA, buf);
+
+	    /* get it! */
+	    curl_easy_perform(curl_handle);
+	    int num = atoi(buf);
+	    return num;
+
+}

@@ -1,0 +1,33 @@
+/*
+ * Sensors.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Sensors.h"
+#include "Service.h"
+
+Sensors::Sensors(const Service& service)
+	: Servc(service)
+{
+	// TODO Auto-generated constructor stub
+
+}
+
+Sensors::~Sensors() {
+	// TODO Auto-generated destructor stub
+}
+
+void Sensors::readSensorValues() const
+{
+	Servc.sendSensorData("Humidity", readHumidity());
+	Servc.sendSensorData("Temperature", readTemperature());
+	Servc.sendSensorData("Moisture", readMoisture());
+}
+
+double Sensors::readHumidity() const
+{
+
+}
+

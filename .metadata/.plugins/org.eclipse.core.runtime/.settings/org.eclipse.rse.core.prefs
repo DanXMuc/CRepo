@@ -1,0 +1,4 @@
+activeuserprofiles=LarsMUC;Team;intel
+eclipse.preferences.version=1
+org.eclipse.rse.systemtype.local.systemType.defaultUserId=intel
+useridperkey=intel.Local\=intel;intel.galileo\=root;

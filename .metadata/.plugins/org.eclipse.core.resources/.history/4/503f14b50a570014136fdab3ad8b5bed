@@ -1,0 +1,23 @@
+/*
+ * Service.h
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#ifndef SERVICE_H_
+#define SERVICE_H_
+
+class Service {
+public:
+	Service();
+	virtual ~Service();
+
+	void informPlantWatered(int duration) const;
+
+private:
+	CURL *curl_handle;
+	CURLcode res;
+};
+
+#endif /* SERVICE_H_ */

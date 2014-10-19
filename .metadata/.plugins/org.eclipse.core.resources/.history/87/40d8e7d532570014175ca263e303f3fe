@@ -1,0 +1,107 @@
+/*
+ * Service.cpp
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#include "Service.h"
+#include <stdlib.h>
+#include <fstream>
+#include <iostream>
+
+Service::Service()
+	: curl_handle(NULL)
+{
+	curl_handle = curl_easy_init();
+}
+
+Service::~Service() {
+	  /* cleanup curl stuff */
+	  curl_easy_cleanup(curl_handle);
+}
+
+void Service::informPlantWatered(int duration) const
+{
+	  curl_global_init(CURL_GLOBAL_ALL);
+
+	  char* url = new char[256];
+
+	  snprintf(url, 256, "http://146.0.40.96/balconygardener/service.php?action=infoPlantWatered&duration=%d", duration);
+
+	  /* set URL to get */
+	  curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+
+	  /* no progress meter please */
+	  curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
+
+	  /* get it! */
+	  curl_easy_perform(curl_handle);
+}
+
+void Service::sendSensorData(const std::string& sensorName, double value) const
+{
+	  curl_global_init(CURL_GLOBAL_ALL);
+
+	  char* url = new char[256];
+
+	  snprintf(url, 256, "http://146.0.40.96/balconygardener/service.php?action=insertSensorData&sensorName=%s&value=%.3f", sensorName.c_str(), value);
+
+	  /* set URL to get */
+	  curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+
+	  /* no progress meter please */
+	  curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
+
+	  /* get it! */
+	  curl_easy_perform(curl_handle);
+}
+static size_t Service::write_data(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+	Service::duration = atoi((char*)ptr);
+  return 0;
+}
+size_t Service::write_data(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+	 Service::write_data(void *ptr, size_t size, size_t nmemb, void *stream);
+	 return 0;
+}
+
+
+int Service::getDuration(){
+	return duration;
+}
+
+int Service::readServerData()
+{
+	char* url = new char[256];
+
+
+	  snprintf(url, 256, "http://146.0.40.96/balconygardener/service.php?action=shouldWater");
+
+	  /* set URL to get */
+	  curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+
+	  /* no progress meter please */
+	  curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
+
+	  /* send all data to this function  */
+	   curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION,Service::write_data);
+
+	   /* open the files */
+
+
+	   /* we want the body be written to this file handle instead of stdout */
+	   curl_easy_setopt(curl_handle,   CURLOPT_WRITEDATA, NULL);
+
+	   /* get it! */
+	   curl_easy_perform(curl_handle);
+
+
+
+	   /* cleanup curl stuff */
+	   curl_easy_cleanup(curl_handle);
+
+	   return 0;
+
+}

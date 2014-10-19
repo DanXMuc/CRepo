@@ -1,0 +1,33 @@
+/*
+ * Sensors.h
+ *
+ *  Created on: Oct 18, 2014
+ *      Author: Lars
+ */
+
+#ifndef SENSORS_H_
+#define SENSORS_H_
+
+class Service;
+
+namespace mraa
+{
+	class Aio;
+}
+
+class Sensors {
+public:
+	Sensors(const Service& service);
+	virtual ~Sensors();
+
+	void readSensorValues() const;
+
+	double readHumidity() const;
+	double readMoisture() const;
+	double readTemperature() const;
+
+private:
+	const Service& Servc;
+};
+
+#endif /* SENSORS_H_ */

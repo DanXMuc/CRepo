@@ -1,0 +1,27 @@
+//============================================================================
+// Name        : iotdk-cpp-template.cpp
+// Author      : Intel Corporation
+// Version     :
+// Copyright   : 
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "mraa.hpp"
+#include <curl/curl.h>
+#include <curl/easy.h>
+using namespace std;
+
+int informPlantWatered(int duration);
+
+int main() {
+	curl_global_init(CURL_GLOBAL_ALL);
+	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+	Service s;
+	s.informPlantWatered(1338);
+	return 0;
+}
